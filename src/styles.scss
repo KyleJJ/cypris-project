@@ -1,1 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+    margin: 0;
+    cursor: pointer;
+}
+
+h3 {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(0,0,0,.4);
+}
+
+p {
+    margin: 0;
+    font-family: sans-serif;
+    font-size: 12px;
+    color: rgba(0,0,0,.4);
+}

@@ -1,0 +1,57 @@
+<div class="home" [class.centered]="scholarService.papers.length == 0">
+
+  <img src="../assets/semantic-scholar.svg" width="200px" *ngIf="scholarService.papers.length == 0">
+
+  <div class="query-wrapper">
+    <input [(ngModel)]="query" placeholder="Search">
+    <div class="fields-wrapper" [class.show]="showFields">
+      <span class="material-symbols-outlined" (click)="showFields = !showFields">tune</span>
+      <div class="fields">
+        <div class="field limit">
+          <h3># of papers</h3>
+          <span class="material-symbols-outlined" (click)="limit = limit - 1">remove</span>
+          <input type="number" [(ngModel)]="limit">
+          <span class="material-symbols-outlined" (click)="limit = limit + 1">add</span>
+        </div>
+      </div>
+    </div>
+    <button (click)="search()" [class.loading]="scholarService.loading">
+      <span class="material-symbols-outlined">{{ scholarService.loading ? 'refresh' : 'search' }}</span>
+    </button>
+  </div>
+
+  <p *ngIf="scholarService.papers.length == 0">Made by Kyle Johnson</p>
+
+  <div class="page-wrapper" *ngIf="scholarService.papers.length > 0">
+    <span class="material-symbols-outlined" (click)="back()" *ngIf="page != 0">arrow_back_ios</span>
+    <span class="page">{{ (page + 1) }}</span>
+    <span class="total">/</span><span class="total">{{ math.round(scholarService.total / limit) }}</span>
+    <span class="material-symbols-outlined" (click)="next()">arrow_forward_ios</span>
+  </div>
+
+  <div class="filter-wrapper" [class.show]="showFilter" *ngIf="scholarService.papers.length > 0 || showFilter">
+    <span class="material-symbols-outlined" (click)="showFilter = !showFilter">{{ showFilter ? 'close' : 'filter_alt' }}</span>
+    <div class="filter">
+      <input [(ngModel)]="filter" placeholder="Filter results">
+    </div>
+  </div>
+
+  <div class="chart-wrapper" [class.show]="showChart" *ngIf="scholarService.papers.length > 0">
+    <span class="material-symbols-outlined" (click)="showChart = !showChart">{{ showChart ? 'close' : 'bar_chart' }}</span>
+    <div class="chart">
+      <div class="bar" *ngFor="let word of $any(scholarService.chart.words | keyvalue)" [style.width]="(word.value / scholarService.chart.max) * 100 + '%'">
+        <div class="value">{{ word.value }}</div>
+        <h3>{{ word.key }}</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="papers" *ngIf="scholarService.papers && scholarService.papers.length > 0">
+
+    <div class="paper" *ngFor="let paper of scholarService.papers | filterPapers : filter">
+      <div class="title">{{ paper.title }}</div>
+      <div class="authors"><span *ngFor="let author of paper.authors">{{ author.name }}</span></div>
+      <div class="abstract" *ngIf="paper.abstract"><strong>Abstract</strong><br>{{ paper.abstract }}</div>
+    </div>
+  </div>
+</div>
